@@ -1,6 +1,7 @@
 package me.cirq;
 
 import junit.framework.TestCase;
+import me.cirq.util.ProjectPathHandler;
 import org.junit.Test;
 
 import java.io.File;

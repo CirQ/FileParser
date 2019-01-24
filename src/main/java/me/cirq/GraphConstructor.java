@@ -1,5 +1,6 @@
 package me.cirq;
 
+import me.cirq.entity.SimpleFrame;
 import soot.*;
 import soot.options.Options;
 import soot.tagkit.LineNumberTag;
@@ -10,6 +11,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * For generating SootMethod and Control graph
+ */
 public class GraphConstructor implements Config {
     private static GraphConstructor instance;
     static {
@@ -78,9 +82,6 @@ public class GraphConstructor implements Config {
 
     private int[] getMethodLineInterval(UnitGraph graph){
         int start = Integer.MAX_VALUE, end = 0;
-
-        System.out.println(graph);
-
         Iterator<Unit> it = graph.iterator();
         while(it.hasNext()){
             Unit unit = it.next();

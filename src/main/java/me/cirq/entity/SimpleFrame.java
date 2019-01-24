@@ -1,9 +1,12 @@
-package me.cirq;
+package me.cirq.entity;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A simple text-based frame in a crash stack
+ */
 public class SimpleFrame {
     private String packageName;
     private String className;

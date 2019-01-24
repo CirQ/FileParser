@@ -1,12 +1,12 @@
 package me.cirq;
 
 import junit.framework.TestCase;
+import me.cirq.util.FileReader;
+import me.cirq.util.ProjectPathHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class FileReaderTest extends TestCase {
@@ -17,10 +17,7 @@ public class FileReaderTest extends TestCase {
     @Override
     protected void setUp() {
         ProjectPathHandler handler = new ProjectPathHandler();
-        String testPath = handler.getProjectTestSourcePath();
-        String packagePath = "me.cirq.res".replace(".", File.separator);
-        testPath = Paths.get(testPath, packagePath).toString();
-        filename = Paths.get(testPath, "hello_world.txt").toString();
+        filename = handler.getInTestSourcePath("me.cirq.res", "hello_world.txt");
     }
 
     @Test

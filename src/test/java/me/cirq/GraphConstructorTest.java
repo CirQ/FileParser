@@ -1,13 +1,14 @@
 package me.cirq;
 
 import junit.framework.TestCase;
+import me.cirq.entity.CrashStack;
+import me.cirq.entity.SimpleFrame;
+import me.cirq.util.ProjectPathHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 import soot.SootMethod;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class GraphConstructorTest extends TestCase {
@@ -15,10 +16,7 @@ public class GraphConstructorTest extends TestCase {
 
     private String getFileName(String filename){
         ProjectPathHandler handler = new ProjectPathHandler();
-        String testPath = handler.getProjectTestSourcePath();
-        String packagePath = "me.cirq.res".replace(".", File.separator);
-        testPath = Paths.get(testPath, packagePath).toString();
-        return Paths.get(testPath, filename).toString();
+        return handler.getInTestSourcePath("me.cirq.res", filename);
     }
 
     @Test

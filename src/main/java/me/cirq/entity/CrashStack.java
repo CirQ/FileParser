@@ -1,4 +1,6 @@
-package me.cirq;
+package me.cirq.entity;
+
+import me.cirq.util.FileReader;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -7,6 +9,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Entity for crash stack based on text input
+ */
 public class CrashStack implements Iterable<SimpleFrame> {
     private static final Pattern EXCEPTION_PATTERN = Pattern.compile(
             "^(.*?) ?((?:\\w+\\.)+\\w+(?:Exception|Error)): (.*?)$");

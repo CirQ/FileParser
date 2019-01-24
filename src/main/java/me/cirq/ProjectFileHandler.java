@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+@Deprecated
 public class ProjectFileHandler implements Config, Iterable<SootClass> {
     private static final String SOURCE_SUFFIX = ".java";
     private static final String CLASS_SUFFIX = ".class";

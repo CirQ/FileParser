@@ -1,13 +1,13 @@
 package me.cirq;
 
 import junit.framework.TestCase;
+import me.cirq.entity.CrashStack;
+import me.cirq.entity.SimpleFrame;
+import me.cirq.util.ProjectPathHandler;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.List;
 
 public class CrashStackTest extends TestCase {
     private String filename;
@@ -15,10 +15,7 @@ public class CrashStackTest extends TestCase {
     @Override
     protected void setUp() {
         ProjectPathHandler handler = new ProjectPathHandler();
-        String testPath = handler.getProjectTestSourcePath();
-        String packagePath = "me.cirq.res".replace(".", File.separator);
-        testPath = Paths.get(testPath, packagePath).toString();
-        filename = Paths.get(testPath, "simple_stack.txt").toString();
+        filename = handler.getInTestSourcePath("me.cirq.res", "simple_stack.txt");
     }
 
     @Test

@@ -1,4 +1,4 @@
-package me.cirq;
+package me.cirq.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
+/**
+ * Unified access to files, by text, bytes or lines
+ */
 public class FileReader {
     public static String readAllText(String filename) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(filename));

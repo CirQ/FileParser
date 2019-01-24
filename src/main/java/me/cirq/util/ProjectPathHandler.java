@@ -1,8 +1,12 @@
-package me.cirq;
+package me.cirq.util;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Unified access to get project paths, particularly for Maven projects
+ */
 public class ProjectPathHandler {
     private static final String MAVEN_SOURCE_PATH = Paths.get("src", "main", "java").toString();
     private static final String MAVEN_CLASS_PATH = Paths.get("target", "classes").toString();
@@ -42,5 +46,25 @@ public class ProjectPathHandler {
     public String getProjectTestClassPath(){
         Path classPath = Paths.get(projectPath, MAVEN_TEST_CLASS_PATH);
         return classPath.toString();
+    }
+
+    public String getInSourcePath(String packageName, String filename){
+        String packagePath = packageName.replace(".", File.separator);
+        return Paths.get(getProjectSourcePath(), packagePath, filename).toString();
+    }
+
+    public String getInClassPath(String packageName, String filename){
+        String packagePath = packageName.replace(".", File.separator);
+        return Paths.get(getProjectClassPath(), packagePath, filename).toString();
+    }
+
+    public String getInTestSourcePath(String packageName, String filename){
+        String packagePath = packageName.replace(".", File.separator);
+        return Paths.get(getProjectTestSourcePath(), packagePath, filename).toString();
+    }
+
+    public String getInTestClassPath(String packageName, String filename){
+        String packagePath = packageName.replace(".", File.separator);
+        return Paths.get(getProjectTestClassPath(), packagePath, filename).toString();
     }
 }
