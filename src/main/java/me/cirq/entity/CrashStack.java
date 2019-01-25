@@ -34,6 +34,7 @@ public class CrashStack implements Iterable<SimpleFrame> {
         SimpleFrame previous = null;
         SimpleFrame current = null;
 
+        int i = 0;
         while(it.hasNext()){
             String frame_text = it.next();
             Matcher frame_matcher = FRAME_PATTERN.matcher(frame_text);
@@ -41,7 +42,7 @@ public class CrashStack implements Iterable<SimpleFrame> {
                 String method = frame_matcher.group(1);
                 String filename = frame_matcher.group(2);
                 String line_number = frame_matcher.group(3);
-                current = new SimpleFrame(method, filename, Integer.valueOf(line_number));
+                current = new SimpleFrame(method, filename, Integer.valueOf(line_number), i++);
                 frames.add(current);
                 if(previous != null){
                     previous.setNext(current);

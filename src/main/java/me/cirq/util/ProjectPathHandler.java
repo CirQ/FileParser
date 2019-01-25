@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Unified access to get project paths, particularly for Maven projects
+ * Unified access to getClass project paths, particularly for Maven projects
  */
 public class ProjectPathHandler {
     private static final String MAVEN_SOURCE_PATH = Paths.get("src", "main", "java").toString();

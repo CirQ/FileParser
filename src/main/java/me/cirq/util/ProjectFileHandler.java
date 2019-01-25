@@ -1,5 +1,6 @@
-package me.cirq;
+package me.cirq.util;
 
+import me.cirq.Config;
 import soot.Scene;
 import soot.SootClass;
 import soot.options.Options;

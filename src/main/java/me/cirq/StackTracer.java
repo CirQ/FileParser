@@ -1,14 +1,19 @@
 package me.cirq;
 
 import me.cirq.entity.CrashStack;
+import me.cirq.entity.SimpleFrame;
+import me.cirq.entity.SuspiciousBlock;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * For static analysis on control flow graph
  */
 public class StackTracer {
-    CrashStack stack;
+    private CrashStack stack;
+    private static Map<SimpleFrame, SuspiciousBlock> map = new TreeMap<>();
 
     public StackTracer(CrashStack stack){
         this.stack = stack;
@@ -18,6 +23,13 @@ public class StackTracer {
         this.stack = new CrashStack(stackTextFilename);
     }
 
+    public void analysis(){
+        for(SimpleFrame frame: stack){
+            SuspiciousBlock sb = new SuspiciousBlock(frame);
+            map.put(frame, sb);
+        }
+        System.out.println(map);
+    }
 
 
 

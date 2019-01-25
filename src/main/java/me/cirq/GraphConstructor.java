@@ -18,6 +18,8 @@ public class GraphConstructor implements Config {
     private static GraphConstructor instance;
     static {
         Options.v().set_keep_line_number(true);
+        Options.v().set_whole_program(true);
+        Options.v().set_ignore_resolving_levels(true);  // fuck
         addSootLoadPath(PATH_HANDLER.getProjectClassPath());
         addSootLoadPath(PATH_HANDLER.getProjectTestClassPath());
     }
@@ -47,7 +49,20 @@ public class GraphConstructor implements Config {
         return instance;
     }
 
-    public SootClass get(String fullClassName){
+//    private SootClass loadClass(String fullClassName){
+//        SootClass sc;
+//        try{
+//            sc = Scene.v().loadClassAndSupport(fullClassName);
+//        } catch (RuntimeException e){
+//            sc = Scene.v().getSootClass(fullClassName);
+//            sc.checkLevel(SootClass.BODIES);
+//            sc.setResolvingLevel(SootClass.BODIES);
+//        }
+//        Scene.v().loadNecessaryClasses();
+//        return sc;
+//    }
+
+    private SootClass getClass(String fullClassName){
         SootClass sc;
         if(sootClassMap.containsKey(fullClassName))
             sc = sootClassMap.get(fullClassName);
@@ -59,14 +74,14 @@ public class GraphConstructor implements Config {
         return sc;
     }
 
-    public List<SootMethod> get(String fullClassName, String methodName){
+    private List<SootMethod> getMethods(String fullClassName, String methodName){
         List<SootMethod> lsm;
         String fullMethodName = String.join(".", fullClassName, methodName);
         if(sootMethodMap.containsKey(fullMethodName))
             lsm = sootMethodMap.get(fullMethodName);
         else{
             lsm = new LinkedList<>();
-            SootClass sc = get(fullClassName);
+            SootClass sc = getClass(fullClassName);
             Iterator<SootMethod> it = sc.methodIterator();
             while(it.hasNext()){
                 SootMethod sm = it.next();
@@ -94,8 +109,8 @@ public class GraphConstructor implements Config {
         return new int[]{start, end};
     }
 
-    public SootMethod get(String fullClassName, String methodName, int lineNumber){
-        List<SootMethod> lsm = get(fullClassName, methodName);
+    private SootMethod getMethod(String fullClassName, String methodName, int lineNumber){
+        List<SootMethod> lsm = getMethods(fullClassName, methodName);
         for(SootMethod method: lsm){
             Body body = method.getActiveBody();
             UnitGraph graph = new ExceptionalUnitGraph(body);
@@ -108,11 +123,44 @@ public class GraphConstructor implements Config {
         return null;
     }
 
-    public SootMethod get(SimpleFrame frame){
+    public SootMethod getMethod(SimpleFrame frame){
         String fullName = frame.getQualifiedName();
         String methodName = frame.getMethodName();
         int lineNumber = frame.getLineNumber();
-        return this.get(fullName, methodName, lineNumber);
+        return this.getMethod(fullName, methodName, lineNumber);
+    }
+
+
+    private int[] getBlockLineInterval(Block block){
+        int start = Integer.MAX_VALUE, end = 0;
+        for(Unit unit: block){
+            LineNumberTag tag = (LineNumberTag) unit.getTag("LineNumberTag");
+            if(tag != null){
+                start = Math.min(start, tag.getLineNumber());
+                end = Math.max(end, tag.getLineNumber());
+            }
+        }
+        return new int[]{start, end};
+    }
+
+    private Block getBlock(String fullClassName, String methodName, int lineNumber){
+        SootMethod method = getMethod(fullClassName, methodName, lineNumber);
+        Body body = method.getActiveBody();
+        BlockGraph graph = new ExceptionalBlockGraph(body);
+        for(Block block: graph){
+            int[] interval = getBlockLineInterval(block);
+            if(lineNumber>=interval[0] && lineNumber<=interval[1]) {
+                return block;
+            }
+        }
+        return null;
+    }
+
+    public Block getBlock(SimpleFrame frame){
+        String fullName = frame.getQualifiedName();
+        String methodName = frame.getMethodName();
+        int lineNumber = frame.getLineNumber();
+        return this.getBlock(fullName, methodName, lineNumber);
     }
 
 

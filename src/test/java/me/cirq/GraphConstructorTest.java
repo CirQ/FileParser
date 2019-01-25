@@ -7,6 +7,7 @@ import me.cirq.util.ProjectPathHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 import soot.SootMethod;
+import soot.toolkits.graph.Block;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,8 +33,25 @@ public class GraphConstructorTest extends TestCase {
         Iterator<SimpleFrame> it = stack.iterator();
         it.next();
         SimpleFrame frame = it.next();
-        SootMethod sm = grapher.get(frame);
+        SootMethod sm = grapher.getMethod(frame);
         assertEquals("<me.cirq.subject.ClassC: void f12(int)>", sm.getSignature());
+    }
+
+    @Test
+    public void testFindBlock(){
+        String filename = getFileName("simple_stack.txt");
+        CrashStack stack = null;
+        try {
+            stack = new CrashStack(filename);
+        } catch (IOException e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        Iterator<SimpleFrame> it = stack.iterator();
+        it.next();
+        SimpleFrame frame = it.next();
+        Block b = grapher.getBlock(frame);
+        assertEquals("staticinvoke <me.cirq.subject.ClassD: void f11()>()", b.getHead().toString());
     }
 
     @Ignore
@@ -54,7 +72,7 @@ public class GraphConstructorTest extends TestCase {
         String anotherProjectPath = "C:\\Users\\dell\\Desktop\\tencent\\locator\\hadoop\\hadoop-yarn-project\\hadoop-yarn\\hadoop-yarn-server\\hadoop-yarn-server-resourcemanager";
         ProjectPathHandler anotherProject = new ProjectPathHandler(anotherProjectPath);
         GraphConstructor.addSootLoadPath(anotherProject.getProjectClassPath());
-        SootMethod sm = grapher.get(frame);
+        SootMethod sm = grapher.getMethod(frame);
 
         System.out.println(sm);
     }

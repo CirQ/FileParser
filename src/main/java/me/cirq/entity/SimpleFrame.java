@@ -7,13 +7,14 @@ import java.util.List;
 /**
  * A simple text-based frame in a crash stack
  */
-public class SimpleFrame {
+public class SimpleFrame implements Comparable<SimpleFrame>{
     private String packageName;
     private String className;
     private String methodName;
     private String qualifiedName;
     private String fileName;
     private int lineNumber;
+    private int depth;      // the depth from the crash point
 
     private SimpleFrame prev, next;
 
@@ -26,7 +27,7 @@ public class SimpleFrame {
         return new String[]{package_, class_, method};
     }
 
-    public SimpleFrame(String methodName, String fileName, int lineNumber) {
+    public SimpleFrame(String methodName, String fileName, int lineNumber, int depth) {
         String[] splited = parseMethodName(methodName);
         this.packageName = splited[0];
         this.className = splited[1];
@@ -34,6 +35,7 @@ public class SimpleFrame {
         this.qualifiedName = String.join(".", packageName, className);
         this.fileName = fileName;
         this.lineNumber = lineNumber;
+        this.depth = depth;
         this.prev = this.next = null;
     }
 
@@ -60,6 +62,22 @@ public class SimpleFrame {
     public int getLineNumber() {
         return lineNumber;
     }
+
+    public int getDepth() {
+        return depth;
+    }
+
+
+    @Override
+    public int hashCode(){      // genius!
+        return depth;
+    }
+
+    @Override
+    public int compareTo(SimpleFrame that){
+        return depth - that.depth;
+    }
+
 
     public SimpleFrame getPrev() {
         return prev;

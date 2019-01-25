@@ -1,8 +1,6 @@
-package me.cirq;
+package me.cirq.util;
 
 import junit.framework.TestCase;
-import me.cirq.util.FileReader;
-import me.cirq.util.ProjectPathHandler;
 import org.junit.Assert;
 import org.junit.Test;
 

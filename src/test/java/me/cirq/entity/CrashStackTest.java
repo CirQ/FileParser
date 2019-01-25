@@ -1,8 +1,6 @@
-package me.cirq;
+package me.cirq.entity;
 
 import junit.framework.TestCase;
-import me.cirq.entity.CrashStack;
-import me.cirq.entity.SimpleFrame;
 import me.cirq.util.ProjectPathHandler;
 import org.junit.Test;
 
