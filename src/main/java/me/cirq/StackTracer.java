@@ -13,14 +13,16 @@ import java.util.TreeMap;
  */
 public class StackTracer {
     private CrashStack stack;
-    private static Map<SimpleFrame, SuspiciousBlock> map = new TreeMap<>();
+    private static Map<SimpleFrame, SuspiciousBlock> map;
 
     public StackTracer(CrashStack stack){
         this.stack = stack;
+        map = new TreeMap<>();
     }
 
     public StackTracer(String stackTextFilename) throws IOException {
         this.stack = new CrashStack(stackTextFilename);
+        map = new TreeMap<>();
     }
 
     public void analysis(){

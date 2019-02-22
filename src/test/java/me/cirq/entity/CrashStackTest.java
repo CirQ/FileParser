@@ -21,13 +21,13 @@ public class CrashStackTest extends TestCase {
         CrashStack cs = new CrashStack(filename);
 
         assertEquals(cs.getException(), "java.lang.ArrayIndexOutOfBoundsException");
-        assertEquals(cs.getMessage(), "32");
+        assertEquals(cs.getMessage(), "20");
 
         Iterator<SimpleFrame> it = cs.iterator();
 
         SimpleFrame frame1 = it.next();
         assertEquals(frame1.getQualifiedName(), "me.cirq.subject.ClassD");
-        assertEquals(frame1.getLineNumber(), 13);
+        assertEquals(frame1.getLineNumber(), 16);
         SimpleFrame frame2 = it.next();
         assertEquals(frame2.getQualifiedName(), "me.cirq.subject.ClassC");
         assertEquals(frame2.getLineNumber(), 10);

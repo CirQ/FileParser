@@ -1,5 +1,5 @@
-Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 32
-	at me.cirq.subject.ClassD.f11(ClassD.java:13)
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 20
+	at me.cirq.subject.ClassD.f11(ClassD.java:16)
 	at me.cirq.subject.ClassC.f12(ClassC.java:10)
 	at me.cirq.subject.ClassB.f3(ClassB.java:7)
 	at me.cirq.subject.util.ClassA.f1(ClassA.java:8)
