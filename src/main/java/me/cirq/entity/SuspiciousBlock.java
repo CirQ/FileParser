@@ -35,11 +35,16 @@ public class SuspiciousBlock {
         }
     }
 
+    private void calculateFeatures(){
+        // todo: calculate
+    }
+
     public SuspiciousBlock(SimpleFrame frame){
         block = grapher.getBlock(frame);
         method = grapher.getMethod(frame);
         predecessor = new LinkedHashSet<>();
         backwardReference();
+        calculateFeatures();
     }
 
     public Block getBlock() {

@@ -3,6 +3,11 @@ package me.cirq;
 import me.cirq.entity.CrashStack;
 import me.cirq.entity.SimpleFrame;
 import me.cirq.entity.SuspiciousBlock;
+import soot.SootMethod;
+import soot.Unit;
+import soot.jimple.InvokeExpr;
+import soot.jimple.internal.JInvokeStmt;
+import soot.toolkits.graph.Block;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,7 +35,18 @@ public class StackTracer {
             SuspiciousBlock sb = new SuspiciousBlock(frame);
             map.put(frame, sb);
         }
-        System.out.println(map);
+
+        for(SuspiciousBlock sBlock: map.values()){
+            Block block = sBlock.getBlock();
+            for(Unit unit: block){
+                if(unit instanceof JInvokeStmt){
+                    InvokeExpr expr = ((JInvokeStmt)unit).getInvokeExpr();
+                    SootMethod invokedMethod = expr.getMethod();
+                    System.out.println(invokedMethod);
+                }
+
+            }
+        }
     }
 
 
