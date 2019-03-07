@@ -3,10 +3,10 @@ package me.cirq.subject;
 public class ClassD {
     static void f11(){
         int h = 32;
-        while(h > 20){
+        while(h >= 0){
             h--;
         }
-        if(h < 1){
+        if(h > 1){
             f14();
         }
         else{

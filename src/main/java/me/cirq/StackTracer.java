@@ -5,7 +5,9 @@ import me.cirq.entity.SimpleFrame;
 import me.cirq.entity.SuspiciousBlock;
 import soot.SootMethod;
 import soot.Unit;
+import soot.Value;
 import soot.jimple.InvokeExpr;
+import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JInvokeStmt;
 import soot.toolkits.graph.Block;
 
@@ -36,15 +38,25 @@ public class StackTracer {
             map.put(frame, sb);
         }
 
-        for(SuspiciousBlock sBlock: map.values()){
-            Block block = sBlock.getBlock();
-            for(Unit unit: block){
-                if(unit instanceof JInvokeStmt){
-                    InvokeExpr expr = ((JInvokeStmt)unit).getInvokeExpr();
-                    SootMethod invokedMethod = expr.getMethod();
-                    System.out.println(invokedMethod);
-                }
 
+
+        for(SuspiciousBlock sBlock: map.values()){
+            for(Block block: sBlock.getInvokeChain()) {
+                for(Unit unit: block) {
+                    if(unit instanceof JInvokeStmt) {
+                        InvokeExpr expr = ((JInvokeStmt)unit).getInvokeExpr();
+                        SootMethod invokedMethod = expr.getMethod();
+                        System.out.println(invokedMethod);
+                    }
+                    if(unit instanceof JAssignStmt){
+                        Value value = ((JAssignStmt)unit).rightBox.getValue();
+                        if(value instanceof InvokeExpr){
+                            InvokeExpr expr = (InvokeExpr)value;
+                            SootMethod invokedMethod = expr.getMethod();
+                            System.out.println(invokedMethod);
+                        }
+                    }
+                }
             }
         }
     }
